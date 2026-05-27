@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run unit tests
+        run: python3 -m unittest discover -s tests
+
+      - name: Compile check
+        run: PYTHONPYCACHEPREFIX=/tmp/proof_decay_pycache python3 -m py_compile proof_decay.py run.py
+
+      - name: Run review-only demos
+        run: |
+          python3 run.py examples/scenarios/portfolio_claim.md \
+            --proof examples/scenarios/portfolio_proof.md \
+            --output /tmp/portfolio_decay_review.md \
+            --review-date 2026-05-26 \
+            --review-only
+          python3 run.py examples/scenarios/org_readiness_claim.md \
+            --proof examples/scenarios/org_readiness_proof.md \
+            --output /tmp/org_readiness_decay_review.md \
+            --review-date 2026-05-26 \
+            --review-only
+          python3 run.py examples/scenarios/medical_safety_claim.md \
+            --proof examples/scenarios/medical_safety_proof.md \
+            --output /tmp/medical_safety_decay_review.md \
+            --review-date 2026-05-26 \
+            --review-only
+          grep -q "proof_decay" /tmp/portfolio_decay_review.md
+          grep -q "stale_artifact" /tmp/org_readiness_decay_review.md
+          grep -q "medical or clinical safety" /tmp/medical_safety_decay_review.md
+          grep -q "Boundary Note" /tmp/medical_safety_decay_review.md
+          ! grep -q "## Revised" /tmp/medical_safety_decay_review.md
