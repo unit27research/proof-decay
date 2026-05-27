@@ -12,7 +12,7 @@ The category is stale-evidence review.
 `ACCESS_STATUS: CLEARED_FOR_EXTERNAL_USE`
 `UNIT27_POSITION: ADJACENT_CLAIM_REVIEW_UTILITY`
 
-This repository is prepared as a Unit27 public utility: visible, inspectable, and intended for orientation, testing, and practical use. Controlled protocol materials remain outside this source package.
+This repository is a Unit27 public utility: visible, inspectable, and intended for orientation, testing, and practical use. Controlled protocol materials remain outside this source package.
 
 It answers one narrow question:
 
@@ -78,7 +78,7 @@ python3 run.py examples/scenarios/portfolio_claim.md \
   --review-only
 ```
 
-The output is a proof-decay table with source lines, artifact dates, artifact age, freshness windows, risk flags, bounded wording, and next verification steps.
+The output is a proof-decay table with source lines, match basis, artifact dates, artifact age, freshness windows, risk flags, bounded wording, and next verification steps.
 
 ## Before / After Example
 
