@@ -11,12 +11,12 @@
 - limitations: no patient data; no hospital pilot; no external validation
 - corroboration status: none
 
-## Proof: approval note
-- evidence artifact: internal approval note draft
+## Proof: patient-facing clinical approval note
+- evidence artifact: internal patient-facing clinical approval note draft
 - artifact date: 2025-09-20
 - evidence strength: self-attested
 - evidence type: internal note
-- scope supported: no approval evidence
+- scope supported: internal note with no approval evidence for patient-facing clinical use
 - freshness window: 14 days
 - changed conditions: no current reviewer signoff; workflow changed
 - limitations: no certification body; no medical reviewer; no legal approval; no clinical deployment

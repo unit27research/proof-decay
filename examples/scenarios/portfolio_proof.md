@@ -5,7 +5,7 @@
 - artifact date: 2025-10-01
 - evidence strength: artifact-backed
 - evidence type: screenshot
-- scope supported: local demo on three synthetic prompts
+- scope supported: local workflow demo on three synthetic prompts
 - freshness window: 30 days
 - changed conditions: code changed after screenshot; no current CI run
 - limitations: no production deployment; no external users; no independent evaluation

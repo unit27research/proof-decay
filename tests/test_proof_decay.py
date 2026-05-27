@@ -64,6 +64,58 @@ class ProofDecayTests(unittest.TestCase):
         self.assertEqual(notes[0].freshness_window_days, 30)
         self.assertIn("code changed", notes[0].changed_conditions)
 
+    def test_ordered_fallback_is_marked_low_confidence(self):
+        review = analyze_decay(
+            "The parser is safe for hospitals.",
+            """## Proof: unrelated demo
+- evidence artifact: unrelated local screenshot
+- artifact date: 2026-05-20
+- evidence strength: artifact-backed
+- evidence type: screenshot
+- scope supported: local billing export
+- freshness window: 30 days
+- changed conditions: none
+- limitations: no clinical review
+- corroboration status: none
+""",
+            review_date="2026-05-26",
+        )
+
+        first = review["reviews"][0]
+        self.assertEqual(first["match_basis"], "ordered_fallback")
+        self.assertIn("low_confidence_match", first["decay_flag"])
+        self.assertIn("Verify that the matched proof note belongs to this claim", first["next_verification_step"])
+
+    def test_missing_and_invalid_artifact_dates_do_not_crash(self):
+        missing = analyze_decay(
+            "The workflow is ready for public release.",
+            """## Proof: missing date
+- evidence artifact: local screenshot
+- evidence strength: artifact-backed
+- evidence type: screenshot
+- scope supported: local demo
+- freshness window: 30 days
+""",
+            review_date="2026-05-26",
+        )
+        self.assertIn("missing_artifact_date", missing["reviews"][0]["decay_flag"])
+        self.assertEqual(missing["reviews"][0]["artifact_age"], "unknown")
+
+        invalid = analyze_decay(
+            "The workflow is ready for public release.",
+            """## Proof: invalid date
+- evidence artifact: local screenshot
+- artifact date: yesterday
+- evidence strength: artifact-backed
+- evidence type: screenshot
+- scope supported: local demo
+- freshness window: 30 days
+""",
+            review_date="2026-05-26",
+        )
+        self.assertIn("invalid_artifact_date", invalid["reviews"][0]["decay_flag"])
+        self.assertEqual(invalid["reviews"][0]["artifact_age"], "unknown")
+
     def test_markdown_structures_are_skipped(self):
         text = """# Heading should be skipped
 
@@ -88,7 +140,7 @@ Code block says the system is production-ready.
         review = analyze_decay(CLAIMS, PROOF_NOTES, review_date="2026-05-26")
         markdown = render_markdown(review)
 
-        self.assertIn("| source line | claim | evidence artifact | artifact age | freshness window | decay flag | risk flag | bounded wording | next verification step |", markdown)
+        self.assertIn("| source line | claim | evidence artifact | match basis | artifact age | freshness window | decay flag | risk flag | bounded wording | next verification step |", markdown)
         self.assertIn("## Boundary Note", markdown)
         self.assertNotIn("## Revised", markdown)
 

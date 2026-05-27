@@ -150,6 +150,7 @@ Supported evidence-strength values:
 | source line | Source line where the extracted claim starts. |
 | claim | Current claim text. |
 | evidence artifact | Best matching structured proof note. |
+| match basis | Whether the proof note was matched by keyword or ordered fallback. |
 | artifact age | Age of the artifact as of the review date. |
 | freshness window | Declared useful life of the artifact. |
 | decay flag | Staleness, changed-condition, weak-proof, or limited-artifact signal. |
@@ -161,8 +162,9 @@ Supported evidence-strength values:
 
 - Claim extraction is sentence-based and may miss claims spread across sections.
 - Review-only output is the only supported output shape.
-- Before/proof matching is keyword-based with an ordered fallback and can pair the wrong note.
+- Before/proof matching is keyword-based with an ordered fallback. Ordered fallback is marked as `low_confidence_match`.
 - Date freshness depends on the artifact date and declared freshness window in the proof notes.
+- Missing or invalid artifact dates are surfaced as review flags rather than treated as proof.
 - The tool does not inspect files, URLs, screenshots, logs, demos, or external sources.
 - Suggested bounded wording is for manual editing, not automatic source replacement.
 

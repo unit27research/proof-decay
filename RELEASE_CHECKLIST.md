@@ -10,7 +10,7 @@ Do not create a remote repo, push, deploy, or post publicly until explicit maint
 - [ ] MIT `LICENSE` is present.
 - [ ] GitHub Actions CI workflow is present at `.github/workflows/ci.yml`.
 - [ ] Review-only outputs are regenerated.
-- [ ] Generated outputs contain source line, artifact date, artifact age, freshness window, `proof_decay`, `stale_artifact`, risk flags, and boundary notes.
+- [ ] Generated outputs contain source line, match basis, artifact date, artifact age, freshness window, `proof_decay`, `stale_artifact`, risk flags, and boundary notes.
 - [ ] Tests pass: `python3 -m unittest discover -s tests`.
 - [ ] Compile check passes: `PYTHONPYCACHEPREFIX=/private/tmp/proof_decay_pycache python3 -m py_compile proof_decay.py run.py`.
 - [ ] CI demo checks cover review-only output and absence of generated rewrite sections.

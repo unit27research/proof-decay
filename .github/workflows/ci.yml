@@ -42,6 +42,7 @@ jobs:
             --review-date 2026-05-26 \
             --review-only
           grep -q "proof_decay" /tmp/portfolio_decay_review.md
+          grep -q "match basis" /tmp/portfolio_decay_review.md
           grep -q "stale_artifact" /tmp/org_readiness_decay_review.md
           grep -q "medical or clinical safety" /tmp/medical_safety_decay_review.md
           grep -q "Boundary Note" /tmp/medical_safety_decay_review.md
